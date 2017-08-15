@@ -1,0 +1,18 @@
+<section ng-controller="NetworkCheckCtrl as ncCtrl" class="section-wrap">
+	<div class="network-top">
+		<img ng-src="{{'network_check_img' | i18n: 'image'}}">
+	</div>
+	<div class="log-input" style="height:370px;">
+		<a href="#/login"><img class="go_back" src="img/go_back.png"></a>
+		<div class="input-left" style="margin-top:-150px;height:180px;">
+			<section class="check_body">
+				<img ng-class="{'loading': ncCtrl.loading}" ng-src="{{ncCtrl.step_img}}"class="check_img" >
+				<div ng-class="{'step_1': 'check_step_1', 'step_2': 'check_step_2', 'step_3': 'check_step_3', 'step_4': 'check_step_4', 'step_5': 'check_step_5'}[ncCtrl.step]" class="check_step">
+					<span ng-show="!ncCtrl.running"  ng-click="ncCtrl.start()" class="click check_step_title">点击开始</span>
+					<span ng-show="ncCtrl.running" ng-bind="ncCtrl.step_text" class="check_step_title"></span>
+				</div>
+			</section>
+		</div>
+		<div ng-bind-html="ncCtrl.result" class="network-check-status"></div>
+	</div>
+</section>

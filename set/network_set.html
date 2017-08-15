@@ -1,0 +1,165 @@
+<section class="section-wrap" style="margin-top:-337.5px;margin-left:-600px;width:1200px;height:675px;">
+	<div class="set">
+		<a href="#/login"><img src="img/back.png"></a>
+		<span>{{'settings' | i18n}}</span>
+	</div>
+	<div class="set-body">
+		<div class="set-step-list">
+			<ul class="step-list">
+				<li ng-repeat="step in mainCtrl.settings.list"
+					ng-click="mainCtrl.change_left_tabs_active($index)"
+					ng-class="[step.isActive ? 'step-list-title-active' : '']"
+					ng-show="step.status"
+					ng-bind="step.title | i18n"
+					class="step-list-title"
+				>
+				</li>
+			</ul>
+		</div>
+		<div class="set-step-body">
+			<ul class="tab-list">
+				<li ng-repeat="list_title in mainCtrl.current.list"
+				    ng-click="mainCtrl.change_top_tabs_active($index)"
+					ng-class="[list_title.isActive ? 'tab-title-active' : '']" 
+				    ng-show="list_title.status || mainCtrl.security_password_required" 
+				    ng-bind="list_title.title | i18n"
+				    class="tab-title"
+				>
+				</li>
+			</ul>
+			<div ng-controller="NetworkCtrl as netwCtrl" class="step-content">
+				<table style="overflow-y:auto;" class="table">
+					<thead class="line-head">
+						<tr>
+							<td class="list-top" style="width:195px;">
+								<span class="list-top-span">{{'net_name' | i18n}}</span>
+							</td>
+							<td class="list-top" style="width:195px;">
+								<span class="list-top-span">{{'access_gateway' | i18n}}</span>
+							</td>
+							<td class="list-top" style="width:195px;">
+								<span class="list-top-span">{{'alternate_access_gateway' | i18n}}</span>
+							</td>
+							<td class="list-top" style="width:195px;">
+								<span class="list-top-span">{{'IP_address' | i18n}}</span>
+							</td>
+							<td class="list-top" style="width:195px;">
+								<span class="list-top-span">{{'actions' | i18n}}</span>
+							</td>
+						</tr>
+					</thead>
+					<tbody class="line-body">
+						<tr ng-repeat="item in netwCtrl.list">
+							<td class="list-main" style="width:195px;">
+								<span class="list-main-span" ng-bind="item.name"></span>
+							</td>
+							<td class="list-main" style="width:195px;">
+								<span class="list-main-span" ng-bind="item.gateway"></span>
+							</td>
+							<td class="list-main" style="width:195px;">
+								<span class="list-main-span" ng-bind="item.spare_gateway"></span>
+							</td>
+							<td class="list-main" style="width:195px;">
+								<span ng-show="item.address_mode == 'auto'" class="list-main-span">{{'auto_get' | i18n}}</span>
+								<span ng-show="item.address_mode == 'manual'" class="list-main-span" ng-bind="item.ag_address"></span>
+							</td>
+							<td class="list-main" style="width:195px;">
+								<span class="list-main-span">
+									<span ng-click="netwCtrl.addNetwork('edit', $index)" class="edit">{{'edit' | i18n}}</span>|
+									<span ng-click="netwCtrl.delNetwork($index)" class="del">{{'delete' | i18n}}</span>
+								</span>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="add-new">
+					<span ng-click="netwCtrl.addNetwork()" style="cursor:pointer;">
+						<img src="img/add.png" style="margin-top:-4px;"><span style="font-size:16px;color:#333;margin-left:5px;">{{'add' | i18n}}</span>
+					</span>
+				</div>
+				<div ng-show="netwCtrl.showAdd" class="my-alert" >
+	                <section class="form-box" style="margin-left:-325px;width:650px;">
+	                    <div class="form-head">
+	                        <span class="add-title">{{'add_network' | i18n}}（添加完成后，可根据情况选择网络进行快速切换）</span>
+	                        <img ng-click="netwCtrl.cancelAdd()" class="form-close" src="img/close_hover.png">
+	                    </div>
+	                    <div class="form-body">
+							<div class="form-group">
+						    	<label class="control-label add-text">* {{'net_name' | i18n}}:</label>
+						    	<div class="form-input">
+						      		<input ng-model="netwCtrl.editData.name" type="text" class="form-control add-input">
+						    	</div>
+						  	</div>
+						  	<div class="form-group">
+						    	<label class="control-label add-text">* {{'access_gateway' | i18n}}:</label>
+						    	<div class="form-input">
+						      		<input ng-model="netwCtrl.editData.gateway" type="text" class="form-control add-input">
+						      		<input ng-model="netwCtrl.editData.gateway_proxy" ng-value="netwCtrl.editData.gateway_proxy" type="checkbox" name="proxy"> {{'Agent_enabled' | i18n}}
+						    	</div>
+						  	</div>
+						  	<div class="form-group">
+						    	<label class="control-label add-text">* {{'alternate_access_gateway' | i18n}}:</label>
+						    	<div class="form-input">
+						      		<input ng-model="netwCtrl.editData.spare_gateway" type="text" class="form-control add-input">
+						      		<input ng-model="netwCtrl.editData.spare_gateway_proxy" ng-value="netwCtrl.editData.spare_gateway_proxy" type="checkbox" name="proxy"> {{'Agent_enabled' | i18n}}
+						    	</div>
+						  	</div>
+						  	<div class="form-group">
+						    	<label class="control-label add-text">{{'IP_address' | i18n}}:</label>
+						    	<div class="form-input">
+						      		<input ng-model="netwCtrl.editData.address_mode" name="auto" type="radio" value="auto" />{{'auto_obtain_IP_address' | i18n}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									<input ng-model="netwCtrl.editData.address_mode" name="manual" type="radio" value="manual" />{{'manual_set_IP_address' | i18n}}
+						    	</div>
+						  	</div>
+						  	<div ng-show="netwCtrl.editData.address_mode === 'manual'">
+							  	<div class="form-group">
+							    	<label class="control-label add-text">{{'IP_address' | i18n}}:</label>
+							    	<div class="form-input">
+							      		<input ng-model="netwCtrl.editData.ag_address" type="text" class="form-control add-input">
+							    	</div>
+							  	</div>
+							  	<div class="form-group">
+							    	<label class="control-label add-text">{{'netmask' | i18n}}:</label>
+							    	<div class="form-input">
+							      		<input ng-model="netwCtrl.editData.netmask" type="text" class="form-control add-input">
+							    	</div>
+							  	</div>
+							  	<div class="form-group">
+							    	<label class="control-label add-text">{{'default_gateway' | i18n}}:</label>
+							    	<div class="form-input">
+							      		<input ng-model="netwCtrl.editData.default_gateway" type="text" class="form-control add-input">
+							    	</div>
+							  	</div>
+							</div>
+	                    </div>
+                        <div class="form-footer">
+	                        <button ng-click="netwCtrl.cancelAdd()" type="button" class="btn btn-default">{{'cancel' | i18n}}</button>
+                        	<button ng-disabled="!netwCtrl.editData.name.length || !netwCtrl.editData.gateway.length || !netwCtrl.editData.spare_gateway.length"
+                        			ng-click="netwCtrl.confirmAdd()"
+                        			type="button"
+                        			class="btn btn-primary">
+                        			{{'confirm' | i18n}}
+                        	</button>
+	                    </div>
+	                </section>
+	            </div>
+	            <!-- 是否删除 快捷登录 -->
+			    <div ng-show="netwCtrl.showDel" class="my-alert">
+			    	<section class="form-box">
+			            <div class="form-head">
+			                <span class="form-title">{{'tip' | i18n}}</span>
+			                <img ng-click="netwCtrl.cancelDel()" class="form-close" src="img/close_hover.png">
+			            </div>
+			            <div class="form-body">
+			            	<span>{{'confirm_delete' | i18n}}？</span>
+						</div>
+			            <div class="form-footer">
+			                <button ng-click="netwCtrl.cancelDel()" type="button" class="btn btn-default">{{'cancel' | i18n}}</button>
+			                <button ng-click="netwCtrl.confirmDel()" type="button" class="btn btn-primary">{{'confirm' | i18n}}</button>
+			            </div>
+			        </section>
+			    </div>
+			</div>
+		</div>
+	</div>
+</section>

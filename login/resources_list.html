@@ -1,0 +1,128 @@
+<section ng-controller="ResourcesListCtrl as rlCtrl" class="section-wrap-host-list">
+    
+    <public></public>
+    
+	<div class="host-top">
+		<img ng-src="{{'desk_img' | i18n: 'image'}}">
+	</div>
+	<div class="log-input" style="height:360px;width:748px;">
+		<a ng-click="rlCtrl.goLogin()"><img class="go_back" src="img/go_back.png"></a>
+		<div class="input-left" style="margin-top:-140px;height:300px;width:748px;margin-left:-374px;padding-left:25px;overflow-y:auto;">
+            <div ng-show="rlCtrl.resources.instances.length > 0">
+                <div ng-repeat="instance in rlCtrl.resources.instances" class="host-list scrollbar">
+                    <div ng-show="instance.status !== 'CREATING'">
+                        <div class="host-lifo">
+                            <img ng-show="instance.status == 'ACTIVE'" class="host-icon" src="img/windows-active.png">
+                            <img ng-show="instance.status == 'SHOUTOFF'" class="host-icon" src="img/windows-shoutoff.png">
+                            <span class="host-name">{{instance.name}}</span>
+                            <div class="dropdown">
+                                <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-right">
+                                    <li ng-click="rlCtrl.operatInstance($index, 'boot')">
+                                        <a class="instance-btn" href="javascript:void(0);">{{'boot' | i18n}}</a>
+                                    </li>
+                                    <li ng-click="rlCtrl.operatInstance($index, 'shutoff')">
+                                        <a class="instance-btn" href="javascript:void(0);">{{'shutoff' | i18n}}</a>
+                                    </li>
+                                    <li ng-click="rlCtrl.operatInstance($index, 'reboot')">
+                                        <a class="instance-btn" href="javascript:void(0);">{{'reboot' | i18n}}</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="host-select">
+                            <img class="host-select-icon" src="img/select.png">
+                        </div>
+                    </div>
+                    <div ng-show="instance.status == 'CREATING'">
+                        <div class="host-lifo">
+                            <img class="host-icon" src="img/createing.png">
+                            <span class="host-name">正在创建中...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div ng-show="!rlCtrl.resources.instances.length" class="host-list">
+                <div class="host-lifo">
+                    <img class="host-icon" src="img/desktop-pool.png">
+                    <span class="host-name">{{rlCtrl.desktop_pool.name}}</span>
+                    <img ng-click="rlCtrl.addDesktop()" class="pool-icon" src="img/pool-add.png">
+                </div>
+            </div>
+		</div>
+	</div>
+    <!-- 添加桌面 -->
+    <div ng-show="rlCtrl.showAddDesktop" class="my-alert" >
+        <section class="form-box" style="margin-left:-260px;width:520px;margin-top:-100px;">
+            <div class="form-head">
+                <span class="add-title">申请桌面</span>
+                <img ng-click="rlCtrl.cancelAdd()" class="form-close" src="img/close_hover.png">
+            </div>
+            <div class="form-body">
+                <div class="form-group" style="margin-bottom:0;">
+                    <label class="control-label add-text" style="width:100px;">桌面名称 : </label>
+                    <div class="form-input">
+                        <input ng-model="rlCtrl.instanceName" type="text" class="form-control add-input">
+                    </div>
+                </div>
+            </div>
+            <div class="form-footer">
+                <button ng-click="rlCtrl.cancelAdd()" type="button" class="btn btn-default">{{'cancel' | i18n}}</button>
+                <button ng-disabled="!rlCtrl.instanceName.length" ng-click="rlCtrl.confirmAdd()" type="button" class="btn btn-primary">{{'confirm' | i18n}}</button>
+            </div>
+        </section>
+    </div>
+    <!-- 进度条 -->
+	<div ng-show="rlCtrl.showLoading" class="my-alert">
+        <section class="my-progress">
+            <div class="progress">
+                 <div ng-style="rlCtrl.progress_rate.style" class="progress-bar progress-bar-info progress-bar-striped active">
+                     <div ng-bind="rlCtrl.progress_rate.show_value" class="progress-value"></div>
+                 </div>
+            </div>
+            <button ng-show="rlCtrl.showProgressCancel" ng-click="rlCtrl.cancelProgress()" type="button" class="btn btn-primary">{{'cancel' | i18n}}</button>
+        </section>
+    </div>
+    <!-- 请求超时 -->
+    <div ng-show="rlCtrl.showTimeout" class="my-alert">
+        <section class="confirm-box">
+            <div class="confirm-head">
+                <span class="add-title" style="font-size:18px">{{'request_timeout' | i18n}}!</span>
+                <img ng-click="rlCtrl.cancelGiveUp()" class="form-close" src="img/cancel.png">
+            </div>
+            <div class="confirm-footer">
+                <button ng-click="rlCtrl.cancelGiveUp()" type="button" class="btn btn-default">{{'abandon' | i18n}}</button>
+                <button ng-click="rlCtrl.confirmRetry()" type="button" class="btn btn-primary">{{'retry' | i18n}}</button>
+            </div>
+        </section>
+    </div>
+    <!-- 选择云主机进入方式 -->
+    <div ng-show="rlCtrl.showSelectType" class="my-alert">
+        <section class="confirm-box">
+            <div class="confirm-head">
+                <span class="add-title">{{'select_entry_mode' | i18n}}</span>
+                <img ng-click="rlCtrl.cancelInto()" class="form-close" src="img/cancel.png">
+            </div>
+            <div class="confirm-footer">
+                <button ng-click="rlCtrl.sdapEnter()" type="button" class="btn btn-default">{{'SDAPEnter' | i18n}}</button>
+                <button ng-click="rlCtrl.rdpEnter()" type="button" class="btn btn-primary">{{'RDPEnter' | i18n}}</button>
+            </div>
+        </section>
+    </div>
+    <!-- 云主机操作 -->
+    <div ng-show="rlCtrl.showOperat" class="my-alert">
+        <section class="confirm-box">
+            <div class="confirm-head">
+                <span ng-show="rlCtrl.operation_mode == 'boot'" class="add-title" style="font-size:18px">{{'sure_boot_instance' | i18n}} ?</span>
+                <span ng-show="rlCtrl.operation_mode == 'shutoff'" class="add-title" style="font-size:18px">{{'sure_shoutoff_instance' | i18n}} ?</span>
+                <span ng-show="rlCtrl.operation_mode == 'reboot'" class="add-title" style="font-size:18px">{{'sure_reboot_instance' | i18n}} ?</span>
+            </div>
+            <div class="confirm-footer">
+                <button ng-click="rlCtrl.cancelAction()" type="button" class="btn btn-default">{{'cancel' | i18n}}</button>
+                <button ng-click="rlCtrl.confirmAction()" type="button" class="btn btn-primary">{{'confirm' | i18n}}</button>
+            </div>
+        </section>
+    </div>
+</section>

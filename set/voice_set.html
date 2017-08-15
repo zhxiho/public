@@ -1,0 +1,62 @@
+<section class="section-wrap" style="margin-top:-337.5px;margin-left:-600px;width:1200px;height:675px;">
+	<div class="set">
+		<a href="#/login"><img src="img/back.png"></a>
+		<span>{{'settings' | i18n}}</span>
+	</div>
+	<div class="set-body">
+		<div class="set-step-list">
+			<ul class="step-list">
+				<li ng-repeat="step in mainCtrl.settings.list"
+					ng-click="mainCtrl.change_left_tabs_active($index)"
+					ng-class="[step.isActive ? 'step-list-title-active' : '']"
+					ng-show="step.status"
+					ng-bind="step.title | i18n"
+					class="step-list-title"
+				>
+				</li>
+			</ul>
+		</div>
+		<div class="set-step-body">
+			<ul class="tab-list">
+				<li ng-repeat="list_title in mainCtrl.current.list"
+				    ng-click="mainCtrl.change_top_tabs_active($index)"
+					ng-class="[list_title.isActive ? 'tab-title-active' : '']" 
+				    ng-show="list_title.status || mainCtrl.security_password_required" 
+				    ng-bind="list_title.title | i18n"
+				    class="tab-title"
+				>
+				</li>
+			</ul>
+			<div ng-show="mainCtrl.current.list[0].isActive" ng-controller="VoiceCtrl as voiceCtrl" class="step-content">
+				<div class="form-group">
+                    <label class="control-label pw-text">{{'sound' | i18n}}:</label>
+                    <div class="form-input" style="width:400px;">
+                        <input ng-model="voiceCtrl.range" type="range" id="range">
+                        <span class="range-num">{{voiceCtrl.range}}</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label pw-text"></label>
+                    <div class="form-input">
+                        <input ng-model="voiceCtrl.mute" type="checkbox" class="">
+                        <label class="control-label pw-text">{{'mute' | i18n}}</label>
+                    </div>
+                </div>
+				<footer class="updata-footer">
+					<button type="button" class="btn btn-primary btn-apply" ng-click="voiceCtrl.apply()">{{'apply' | i18n}}</button>
+				</footer>
+			</div>
+			<div ng-show="mainCtrl.current.list[1].isActive" ng-controller="AudioCtrl as audioCtrl" class="step-content">
+				<div class="form-group">
+                    <label class="control-label pw-text">{{'audio_selection' | i18n}}:</label>
+                    <div class="form-input">
+                        <select ng-model="audioCtrl.selectAudio" ng-options="'['+(item.card_name)+'] '+item.profile.name+(item.active?'*':'') group by item.card_name for item in audioCtrl.audioOptions" name="desk" class="form-control add-input select-options"></select>
+                    </div>
+                </div>
+				<footer class="updata-footer">
+					<button type="button" class="btn btn-primary btn-apply" ng-click="audioCtrl.apply()">{{'apply' | i18n}}</button>
+				</footer>
+			</div>
+		</div>
+	</div>
+</section>

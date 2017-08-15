@@ -1,0 +1,36 @@
+<div class="host-net">
+    <img style="width:18px;height:18px;" src="img/host.png">&nbsp;
+    <div class="btn-group">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{mainCtrl.network_ip}}&nbsp;&nbsp;<span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+            <li><a ng-click="mainCtrl.checkoutIntranet()" href="javascript:;">内网</a></li>
+            <li><a ng-click="mainCtrl.checkoutExtranet()" href="javascript:;">外网</a></li>
+        </ul>
+    </div>
+</div>
+<div class="version">
+    版本信息 <span ng-bind="mainCtrl.version"></span>
+</div>
+<div class="switch">
+    <span class="switch-btn"><img src="img/switch.png"></span>
+    <div class="switch-item">
+        <span class="switch-poerat" ng-click="mainCtrl.operatInstance('shutoff')">{{'shutoff' | i18n}}</span>
+        <span class="switch-poerat last" ng-click="mainCtrl.operatInstance('reboot')">{{'reboot' | i18n}}</span>
+        <span class="switch-icon"></span>
+    </div>
+</div>
+<!-- 云主机操作 -->
+<div ng-show="mainCtrl.showOperat" class="my-alert">
+    <section class="confirm-box">
+        <div class="confirm-head">
+            <span ng-show="mainCtrl.operation_mode == 'shutoff'" class="add-title" style="font-size:18px">{{'sure_shoutoff_instance' | i18n}} ?</span>
+            <span ng-show="mainCtrl.operation_mode == 'reboot'" class="add-title" style="font-size:18px">{{'sure_reboot_instance' | i18n}} ?</span>
+        </div>
+        <div class="confirm-footer">
+            <button ng-click="mainCtrl.cancelAction()" type="button" class="btn btn-default">{{'cancel' | i18n}}</button>
+            <button ng-click="mainCtrl.confirmAction()" type="button" class="btn btn-primary">{{'confirm' | i18n}}</button>
+        </div>
+    </section>
+</div>

@@ -1,0 +1,149 @@
+<section class="section-wrap" style="margin-top:-337.5px;margin-left:-600px;width:1200px;height:675px;">
+    <div class="set">
+        <a href="#/login"><img src="img/back.png"></a>
+        <span>{{'settings' | i18n}}</span>
+    </div>
+    <div class="set-body">
+        <div class="set-step-list">
+            <ul class="step-list">
+                <li ng-repeat="step in mainCtrl.settings.list"
+                    ng-click="mainCtrl.change_left_tabs_active($index)"
+                    ng-class="[step.isActive ? 'step-list-title-active' : '']"
+                    ng-show="step.status"
+                    ng-bind="step.title | i18n"
+                    class="step-list-title"
+                >
+                </li>
+            </ul>
+        </div>
+        <div class="set-step-body">
+            <ul class="tab-list">
+                <li ng-repeat="list_title in mainCtrl.current.list"
+                    ng-click="mainCtrl.change_top_tabs_active($index)"
+                    ng-class="[list_title.isActive ? 'tab-title-active' : '']" 
+                    ng-show="list_title.status || mainCtrl.security_password_required" 
+                    ng-bind="list_title.title | i18n"
+                    class="tab-title"
+                >
+                </li>
+            </ul>
+            <!-- 设备信息 -->
+			<div ng-show="mainCtrl.current.list[0].isActive" ng-controller="SystemDeviceInfoCtrl as stmDeviceCtrl" class="step-content">
+				<ul class="updata_pwd">
+					<li class="updata_pwd_li margin">
+						<span class="updata_span">{{'device_name' | i18n}}:</span>
+						<span ng-bind="stmDeviceCtrl.deviceInfo.name" class="write_input write_input_border"></span>
+					</li>
+					<li class="updata_pwd_li margin">
+						<span class="updata_span">{{'device_ID' | i18n}}:</span>
+						<span ng-bind="stmDeviceCtrl.deviceInfo.id" class="write_input write_input_border"></span>
+					</li>
+                    <li class="updata_pwd_li margin">
+                        <span class="updata_span">{{'local_mac_address' | i18n}}:</span>
+                        <span ng-bind="stmDeviceCtrl.deviceInfo.mac_version" class="write_input write_input_border"></span>
+                    </li>
+                    <li class="updata_pwd_li margin">
+                        <span class="updata_span">{{'Android_version' | i18n}}:</span>
+                        <span ng-bind="stmDeviceCtrl.deviceInfo.android_version" class="write_input write_input_border"></span>
+                    </li>
+                    <li class="updata_pwd_li margin">
+                        <span class="updata_span">{{'rom_version' | i18n}}:</span>
+                        <span ng-bind="stmDeviceCtrl.deviceInfo.rom_version" class="write_input write_input_border"></span>
+                    </li>
+                    <li class="updata_pwd_li margin">
+                        <span class="updata_span">{{'client_version' | i18n}}:</span>
+                        <span ng-bind="stmDeviceCtrl.deviceInfo.client_version" class="write_input write_input_border"></span>
+                    </li>
+				</ul>
+				<footer class="updata-footer">
+					<button ng-click="stmDeviceCtrl.reset()" style="width:200px;" type="button" class="btn btn-primary btn-apply">{{'restore_factory_settings' | i18n}}</button>
+                    <button ng-click="stmDeviceCtrl.checkNewVersion()" style="width:200px;" type="button" class="btn btn-primary btn-apply">{{'check_new_version' | i18n}}</button>
+				</footer>
+                <div ng-show="stmDeviceCtrl.showReset" class="my-alert">
+                    <section class="form-box">
+                        <div class="form-head">
+                            <span class="form-title">{{'restore_factory_settings' | i18n}}</span>
+                            <img ng-click="stmDeviceCtrl.cancelReset()" class="form-close" src="img/close_hover.png">
+                        </div>
+                        <div class="form-body">
+                            <span>
+                                确认恢复出厂设置？<br>
+                                恢复出厂设置时，设备的所有数据恢复到初始化状态，包括网络设置以及用户设置数值全部清空
+                            </span>
+                        </div>
+                        <div class="form-footer">
+                            <button ng-click="stmDeviceCtrl.cancelReset()" type="button" class="btn btn-default">{{'cancel' | i18n}}</button>
+                            <button ng-click="stmDeviceCtrl.confirmReset()" type="button" class="btn btn-primary">{{'confirm' | i18n}}</button>
+                        </div>
+                    </section>
+                </div>
+			</div>
+            <!-- 修改设置密码 -->
+            <div ng-show="mainCtrl.current.list[1].isActive" ng-controller="ChangeSecurityPasswordCtrl as cspCtrl" class="step-content">
+                <div class="form-group">
+                    <label class="control-label pw-text">{{'old_password' | i18n}}:</label>
+                    <div class="form-input">
+                        <input ng-model="cspCtrl.old_pwd" type="password" class="form-control  add-input">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label pw-text">{{'new_password' | i18n}}:</label>
+                    <div class="form-input">
+                        <input ng-model="cspCtrl.new_pwd" type="password" class="form-control  add-input">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label pw-text">{{'confirm_password' | i18n}}:</label>
+                    <div class="form-input">
+                        <input ng-model="cspCtrl.cfm_pwd" type="password" class="form-control  add-input">
+                    </div>
+                </div>
+                <footer class="updata-footer">
+                    <button type="button" class="btn btn-primary btn-apply" ng-click="cspCtrl.applyChange()">{{'apply' | i18n}}</button>
+                </footer>
+            </div>
+            <!-- 语言设置 -->
+            <div ng-show="mainCtrl.current.list[2].isActive" ng-controller="LangueCtrl as langCtrl" class="step-content">
+                <div class="form-group">
+                    <label class="control-label pw-text">{{'langue_settings' | i18n}}:</label>
+                    <div class="form-input">
+                        <select ng-model="langCtrl.selectLange" ng-options="selectLange as item for item in langCtrl.langeOptions" name="desk" class="form-control add-input select-options"></select>
+                    </div>
+                </div>
+                <footer class="updata-footer">
+                    <button type="button" class="btn btn-primary btn-apply" ng-click="langCtrl.applyChange()">{{'apply' | i18n}}</button>
+                </footer>	        
+		    </div>
+            <!-- 开发者选项 -->
+            <div ng-show="mainCtrl.current.list[3].isActive" ng-controller="DeveloperOptionsCtrl as doCtrl" class="step-content">
+                <p class="set-title">{{'debug' | i18n}}</p>
+                <div class="checkbox">
+                    <label><input ng-model="doCtrl.enableDebug" ng-click="doCtrl.enableDebug()" type="checkbox" value="true"> {{'enable_debug' | i18n}}</label>
+                </div>
+                <p class="set-title">{{'direct_mode' | i18n}}</p>
+                <div class="checkbox">
+                    <label>
+                      <input ng-model="doCtrl.directDebug" ng-click="doCtrl.directDebug()" type="checkbox" value="true"> {{'debug' | i18n}}
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label class="control-label pw-text">
+                        <input ng-model="doCtrl.proxyDebug" ng-click="doCtrl.proxyDebug()" type="checkbox" value="true"> {{'proxy' | i18n}}
+                    </label>
+                    <div class="form-input">
+                        <input ng-model="doCtrl.proxyAddress" type="text" class="form-control add-input"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label pw-text">{{'direct_address' | i18n}}:</label>
+                    <div class="form-input">
+                        <input ng-model="doCtrl.directAddress" type="password" class="form-control add-input">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="button" class="btn btn-primary btn-apply" ng-click="doCtrl.debugConnect()">{{'connect' | i18n}}</button>
+                </div>     
+            </div>
+		</div>
+	</div>
+</section>

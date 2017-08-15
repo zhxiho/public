@@ -1,0 +1,189 @@
+<section class="section-wrap" style="margin-top:-337.5px;margin-left:-600px;width:1200px;height:675px;">
+	<div class="set">
+		<a href="#/login"><img src="img/back.png"></a>
+		<span>{{'settings' | i18n}}</span>
+	</div>
+	<div class="set-body">
+		<div class="set-step-list">
+			<ul class="step-list">
+				<li ng-repeat="step in mainCtrl.settings.list"
+					ng-click="mainCtrl.change_left_tabs_active($index)"
+					ng-class="[step.isActive ? 'step-list-title-active' : '']"
+					ng-show="step.status"
+					ng-bind="step.title | i18n"
+					class="step-list-title"
+				>
+				</li>
+			</ul>
+		</div>
+		<div class="set-step-body">
+			<ul class="tab-list">
+				<li ng-repeat="list_title in mainCtrl.current.list"
+				    ng-click="mainCtrl.change_top_tabs_active($index)"
+					ng-class="[list_title.isActive ? 'tab-title-active' : '']" 
+				    ng-show="list_title.status || mainCtrl.security_password_required" 
+				    ng-bind="list_title.title | i18n"
+				    class="tab-title"
+				>
+				</li>
+			</ul>
+			<div ng-show="mainCtrl.current.list[0].isActive" ng-controller="EditQuickLoginCtrl as eqlCtrl" class="step-content">
+				<table style="overflow-y:auto;" class="table">
+					<thead class="line-head">
+						<tr>
+							<td class="list-top">
+								<span class="list-top-span">{{'quick_login_name' | i18n}}</span>
+							</td>
+							<td class="list-top">
+								<span class="list-top-span">{{'username' | i18n}}</span>
+							</td>
+							<td class="list-top">
+								<span class="list-top-span">{{'cloud_desktop' | i18n}}</span>
+							</td>
+							<td class="list-top">
+								<span class="list-top-span">{{'network' | i18n}}</span>
+							</td>
+							<td class="list-top">
+								<span class="list-top-span">{{'auto_login' | i18n}}</span>
+							</td>
+							<td class="list-top">
+								<span class="list-top-span">{{'actions' | i18n}}</span>
+							</td>
+						</tr>
+					</thead>
+					<tbody class="line-body">
+						<tr ng-repeat="item in eqlCtrl.list">
+							<td class="list-main">
+								<span class="list-main-span" ng-bind="item.name"></span>
+							</td>
+							<td class="list-main">
+								<span class="list-main-span" ng-bind="item.username"></span>
+							</td>
+							<td class="list-main">
+								<span class="list-main-span" ng-bind="item.desktop"></span>
+							</td>
+							<td class="list-main">
+								<span class="list-main-span" ng-bind="item.ag_address"></span>
+							</td>
+							<td ng-show="item.auto" class="list-main">
+								<span class="list-main-span">{{'yes' | i18n}}</span>
+							</td>
+							<td ng-show="!item.auto" class="list-main">
+								<span class="list-main-span">{{'no' | i18n}}</span>
+							</td>
+							<td class="list-main">
+								<span class="list-main-span">
+									<span ng-click="eqlCtrl.addQuicklyLogin('edit', $index)" class="edit">{{'edit' | i18n}}</span>|
+									<span ng-click="eqlCtrl.delLoginItem($index)" class="del">{{'delete' | i18n}}</span>
+								</span>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="add-new">
+					<span ng-click="eqlCtrl.addQuicklyLogin()" style="cursor:pointer;">
+						<img src="img/add.png" style="margin-top:-4px;"><span style="font-size:16px;color:#333;margin-left:5px;">{{'add' | i18n}}</span>
+					</span>
+				</div>
+				<!-- 添加编辑 快捷登录 -->
+				<div ng-show="eqlCtrl.showAdd" class="my-alert">
+			        <section class="form-box">
+			            <div class="form-head">
+			                <span class="form-title">{{'add_quick_login' | i18n}}（设置完成后可直接登录，无需输入账号密码）</span>
+			                <img ng-click="eqlCtrl.cancelAdd()" class="form-close" src="img/close_hover.png">
+			            </div>
+			            <div class="form-body">
+			            	<div class="form-group">
+						    	<label class="control-label add-text">* {{'quick_login_name' | i18n}}:</label>
+						    	<div class="form-input">
+						      		<input ng-model="eqlCtrl.editData.name" type="text" class="form-control add-input">
+						    	</div>
+						  	</div>
+						  	<div class="form-group">
+						    	<label class="control-label add-text">* {{'username' | i18n}}:</label>
+						    	<div class="form-input">
+						      		<input ng-model="eqlCtrl.editData.username" type="text" placeholder="请输入登录终端的用户名" class="form-control add-input">
+						    	</div>
+						  	</div>
+						  	<div class="form-group">
+						    	<label class="control-label add-text">* {{'password' | i18n}}:</label>
+						    	<div class="form-input">
+						      		<input ng-model="eqlCtrl.editData.password" type="password" placeholder="请输入登录终端的密码" class="form-control  add-input">
+						    	</div>
+						  	</div>
+						  	<div class="form-group">
+						    	<label class="control-label add-text">{{'cloud_desktop' | i18n}}:</label>
+						    	<div class="form-input">
+						    		<input ng-model="eqlCtrl.editData.desktop" type="text" class="form-control add-input">
+						    	</div>
+						  	</div>
+						  	<p class="infos-text">设置完成后通过快捷方式直接登录该桌面</p>
+						  	<div class="form-group">
+						    	<label class="control-label add-text">{{'network' | i18n}}:</label>
+						    	<div class="form-input">
+						      		<select ng-model="eqlCtrl.editData.ag_address" ng-options="" name="network" class="form-control add-input"></select>
+						    	</div>
+						  	</div>
+						  	<div class="form-group">
+						    	<label class="control-label add-text">{{'auto_login' | i18n}}:</label>
+						    	<div class="form-input">
+						      		<input ng-model="eqlCtrl.editData.auto" name="auto" type="radio" value="auto" />{{'yes' | i18n}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									<input ng-model="eqlCtrl.editData.auto" name="manual" type="radio" value="manual" />{{'no' | i18n}}
+						    	</div>
+						  	</div>
+						  	<p class="infos-text">{{'only_one_quick_login_can_set' | i18n}}</p>
+			            </div>
+		                <div class="form-footer">
+		                    <button ng-click="eqlCtrl.cancelAdd()" type="button" class="btn btn-default">{{'cancel' | i18n}}</button>
+		                	<button ng-disabled="!eqlCtrl.editData.name.length || !eqlCtrl.editData.username.length || !eqlCtrl.editData.password.length"
+		                			ng-click="eqlCtrl.confirmAdd()"
+		                			type="button"
+		                			class="btn btn-primary">
+		                			{{'confirm' | i18n}}
+		                	</button>
+		                </div>
+			        </section>
+			    </div>
+			    <!-- 是否删除 快捷登录 -->
+			    <div ng-show="eqlCtrl.showDel" class="my-alert">
+			        <section class="form-box">
+			            <div class="form-head">
+			                <span class="form-title">{{'tip' | i18n}}</span>
+			                <img ng-click="eqlCtrl.cancelDel()" class="form-close" src="img/close_hover.png">
+			            </div>
+			            <div class="form-body">
+			            	<span>{{'confirm_delete' | i18n}}？</span>
+						</div>
+			            <div class="form-footer">
+			                <button ng-click="eqlCtrl.cancelDel()" type="button" class="btn btn-default">{{'cancel' | i18n}}</button>
+			                <button ng-click="eqlCtrl.confirmDel()" type="button" class="btn btn-primary">{{'confirm' | i18n}}</button>
+			            </div>
+			        </section>
+			    </div>
+			</div>
+			<div ng-show="mainCtrl.current.list[1].isActive" ng-controller="UserChangePasswordCtrl as ucpCtrl" class="step-content">
+				<div class="form-group">
+			    	<label class="control-label pw-text">{{'old_password' | i18n}}:</label>
+			    	<div class="form-input">
+			      		<input ng-model="ucpCtrl.old_pwd" type="password" class="form-control add-input">
+			    	</div>
+			  	</div>
+			  	<div class="form-group">
+			    	<label class="control-label pw-text">{{'new_password' | i18n}}:</label>
+			    	<div class="form-input">
+			      		<input ng-model="ucpCtrl.new_pwd" type="password" class="form-control add-input">
+			    	</div>
+			  	</div>
+			  	<div class="form-group">
+			    	<label class="control-label pw-text">{{'confirm_password' | i18n}}:</label>
+			    	<div class="form-input">
+			      		<input ng-model="ucpCtrl.cfm_pwd" type="password" class="form-control add-input">
+			    	</div>
+			  	</div>
+                <footer class="updata-footer">
+                    <button type="button" class="btn btn-primary btn-apply" ng-click="ucpCtrl.applyChangePw()">{{'apply' | i18n}}</button>
+                </footer>
+            </div>
+        </div>
+	</div>
+</section>

@@ -1,0 +1,68 @@
+<section ng-controller="QuickLoginCtrl as qlCtrl" class="section-wrap">
+
+    <public></public>
+    
+	<div class="log-top">
+        <img ng-src="{{'xdesk_login_img' | i18n: 'image'}}">
+	</div>
+	<div class="log-input" style="height:316px;">
+		<div class="input-left" style="margin-top:-108px;height:210px;overflow-y:auto;">
+			<div class="form-group input-line scrollbar" ng-repeat="item in qlCtrl.list">
+				<button
+                    ng-bind="item.name"
+                    ng-click="qlCtrl.quickLogin($index)"
+                    ng-disabled="qlCtrl.btn_status"
+                    type="button"
+                    class="btn btn-login-list"
+                    ng-class="[$index == 0 ? 'btn-login-list-active' : '']"
+                ></button>
+			</div>
+		</div>
+		<div class="input-right">
+			<div class="puick-log">
+				<a href="#/login"><img ng-src="{{'user_login_img' | i18n: 'image'}}"></a>
+			</div>
+		</div>
+	</div>
+    <!-- 登录加载 -->
+    <div ng-show="qlCtrl.showLoading" class="my-alert">
+        <section class="my-progress">
+            <div class="progress">
+                 <div ng-style="qlCtrl.progress_rate.style" class="progress-bar progress-bar-info progress-bar-striped active">
+                     <div ng-bind="qlCtrl.progress_rate.show_value" class="progress-value"></div>
+                 </div>
+             </div>
+			 <button ng-show="qlCtrl.showProgressCancel" ng-click="qlCtrl.cancelProgress()" type="button" class="btn btn-primary">{{'cancel' | i18n}}</button>
+        </section>
+    </div>
+    <!-- 请求超时 -->
+    <div ng-show="qlCtrl.showTimeout" class="my-alert">
+        <section class="confirm-box">
+            <div class="form-head">
+                <span class="add-title" style="font-size:18px">{{'request_timeout' | i18n}}!</span>
+            </div>
+            <div class="confirm-footer">
+                <button ng-click="qlCtrl.cancelGiveUp()" type="button" class="btn btn-default">{{'abandon' | i18n}}</button>
+                <button ng-click="qlCtrl.confirmRetry()" type="button" class="btn btn-primary">{{'retry' | i18n}}</button>
+            </div>
+        </section>
+    </div>
+    <!-- 登录密码 -->
+    <div ng-show="qlCtrl.showPaRequires" class="my-alert">
+        <section class="form-box" style="margin-left:-260px;width:520px;margin-top:-100px;">
+            <div class="form-head">
+                <span class="add-title">{{'password_required' | i18n}}</span>
+                <img ng-click="qlCtrl.cancelLogin()" class="form-close" src="img/close_hover.png">
+            </div>
+            <div class="form-body">
+                <div class="form-group" style="margin-bottom:0;text-align:center;">
+                    <input ng-model="qlCtrl.input_password" type="password" class="form-control add-input">
+                </div>
+            </div>
+            <div class="form-footer">
+                <button ng-click="qlCtrl.cancelLogin()" type="button" class="btn btn-default">{{'cancel' | i18n}}</button>
+                <button ng-disabled="!qlCtrl.input_password.length" ng-click="qlCtrl.confirmLogin()" type="button" class="btn btn-primary">{{'confirm' | i18n}}</button>
+            </div>
+        </section>
+    </div>
+</section>

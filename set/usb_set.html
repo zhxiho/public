@@ -1,0 +1,80 @@
+<section class="section-wrap" style="margin-top:-337.5px;margin-left:-600px;width:1200px;height:675px;">
+	<div class="set">
+		<a href="#/login"><img src="img/back.png"></a>
+		<span>{{'settings' | i18n}}</span>
+	</div>
+	<div class="set-body">
+		<div class="set-step-list">
+			<ul class="step-list">
+				<li ng-repeat="step in mainCtrl.settings.list"
+					ng-click="mainCtrl.change_left_tabs_active($index)"
+					ng-class="[step.isActive ? 'step-list-title-active' : '']"
+					ng-show="step.status"
+					ng-bind="step.title | i18n"
+					class="step-list-title">
+				</li>
+			</ul>
+		</div>
+		<div class="set-step-body">
+			<ul class="tab-list">
+				<li ng-repeat="list_title in mainCtrl.current.list"
+				    ng-click="mainCtrl.change_top_tabs_active($index)"
+					ng-class="[list_title.isActive ? 'tab-title-active' : '']" 
+				    ng-show="list_title.status || mainCtrl.security_password_required" 
+				    ng-bind="list_title.title | i18n"
+				    class="tab-title">
+				</li>
+			</ul>
+			<div ng-controller="USBCtrl as usbCtrl" class="step-content">
+				<div class="usb-left">
+					<div class="usb-thead">
+						<span class="thead-title">{{'usable_USB_devices_list' | i18n}}</span>
+						<span class="thead-select">
+							<span ng-click="usbCtrl.selectAll(usbCtrl.enableList)" class="usb-thead-all">{{'check_all' | i18n}}</span> | 
+							<span ng-click="usbCtrl.unselectAll(usbCtrl.enableList)" class="usb-thead-all">{{'uncheck_all' | i18n}}</span> | 
+							<span ng-click="usbCtrl.reversed(usbCtrl.enableList)" class="usb-thead-all">{{'check_invert' | i18n}}</span>
+						</span>
+					</div>
+					<div class="usb-tbody">
+						<ul class="usb-tbody-ul">
+							<li ng-repeat="dev in usbCtrl.enableList" class="usb-tbody-li">
+								<input ng-model="dev.checked" class="usable" name="select" type="checkbox" />
+								<span ng-show="dev.rw" ng-bind="dev.id" class="usb_li_title"></span>
+								<span ng-click="usbCtrl.rw($index, true)" ng-show="!dev.rw" class="usb_li_status">{{'readonly' | i18n}}</span>
+								<span ng-show="!dev.rw" ng-bind-template="[ {{'readonly' | i18n}} ] {{dev.id}}" class="usb_li_title" style="color:#e47e30;"></span>
+								<span ng-click="usbCtrl.rw($index, false)" ng-show="dev.rw" class="usb_li_status">{{'read_write' | i18n}}</span>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div class="usb-center">
+					<div class="usb_center_img">
+						<span ng-click="usbCtrl.moveDisable()" class="right"></span>
+						<span ng-click="usbCtrl.moveEnable()" class="left"></span>
+					</div>
+				</div>
+				<div class="usb-right">
+					<div class="usb-thead">
+						<span class="thead-title">{{'unusable_USB_devices_list' | i18n}}</span>
+						<span class="thead-select">
+							<span ng-click="usbCtrl.selectAll(usbCtrl.disableList)" class="usb-thead-all">{{'check_all' | i18n}}</span> | 
+							<span ng-click="usbCtrl.unselectAll(usbCtrl.disableList)" class="usb-thead-all">{{'uncheck_all' | i18n}}</span> | 
+							<span ng-click="usbCtrl.reversed(usbCtrl.disableList)" class="usb-thead-all">{{'check_invert' | i18n}}</span>
+						</span>
+					</div>
+					<div class="usb-tbody">
+						<ul class="usb-tbody-ul">
+							<li ng-repeat="dev in usbCtrl.disableList" class="usb-tbody-li">
+								<input ng-model="dev.checked" class="unusable" name="select2" type="checkbox" />
+								<span ng-bind="dev.id" class="usb_li_title"></span>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<footer class="updata-footer">
+					<button type="button" class="btn btn-primary btn-apply" ng-click="usbCtrl.apply()">{{'apply' | i18n}}</button>
+				</footer>
+			</div>
+		</div>
+	</div>
+</section>
